@@ -8,6 +8,8 @@ using System.Windows.Controls;
 
 namespace UIFoundation
 {
+    //is working outside control template 
+    //TODO: create different method for two cases.(in data template and outside)
     public class StateManager : DependencyObject
     {
         public static string GetVisualStateProperty(DependencyObject obj)
@@ -31,7 +33,7 @@ namespace UIFoundation
                 var ctrl = s as Control;
                 if (ctrl == null)
                     throw new InvalidOperationException("This attached property only supports types derived from Control.");
-                System.Windows.VisualStateManager.GoToState(ctrl, (string)e.NewValue, true);
+                System.Windows.VisualStateManager.GoToElementState(ctrl, (string)e.NewValue, true);
             }));
     }
 }

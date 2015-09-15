@@ -58,21 +58,21 @@
                 </ListBox.ItemTemplate>
             </ListBox>
         </Grid>
-        <VisualStateManager.VisualStateGroups>
-            <VisualStateGroup x:Name="Common">
-                <VisualState x:Name="State1">
-                    <Storyboard>
-                        <DoubleAnimation To="1" Duration="0:00:01" Storyboard.TargetName="board" Storyboard.TargetProperty="(UIElement.Opacity)" />
-                        <!--<DoubleAnimation To="0" Duration="0:00:00.7" Storyboard.TargetName="State2Panel" Storyboard.TargetProperty="(UIElement.Opacity)" />-->
-                    </Storyboard>
-                </VisualState>
-                <VisualState x:Name="State2">
-                    <Storyboard>
-                        <DoubleAnimation To="0" Duration="0:00:01" Storyboard.TargetName="board" Storyboard.TargetProperty="(UIElement.Opacity)" />
-                        <!--<DoubleAnimation To="1" Duration="0:00:00.4" Storyboard.TargetName="State2Panel" Storyboard.TargetProperty="(UIElement.Opacity)" />-->
-                    </Storyboard>
-                </VisualState>
-            </VisualStateGroup>
-        </VisualStateManager.VisualStateGroups>
+
     </Grid>
+    <VisualStateManager.VisualStateGroups>
+        <VisualStateGroup x:Name="Common">
+            <VisualState x:Name="State1">
+                <Storyboard>
+                    <DoubleAnimation To="1" Duration="0:00:01" Storyboard.TargetName="board" Storyboard.TargetProperty="Opacity" />
+                </Storyboard>
+            </VisualState>
+            <VisualState x:Name="State2">
+                <Storyboard>
+                    <DoubleAnimation To="0" Duration="0:00:01" Storyboard.TargetName="board" Storyboard.TargetProperty="Opacity" />
+                    <!--<DoubleAnimation To="1" Duration="0:00:00.4" Storyboard.TargetName="State2Panel" Storyboard.TargetProperty="(UIElement.Opacity)" />-->
+                </Storyboard>
+            </VisualState>
+        </VisualStateGroup>
+    </VisualStateManager.VisualStateGroups>
 </Window>
