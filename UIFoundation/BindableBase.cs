@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace UIFoundation
 {
-    public class BaseViewModel : INotifyPropertyChanged
+    public class BindableBase : INotifyPropertyChanged
     {
         protected void SetProperty<T>(ref T container, T value, [CallerMemberName]string memberName = null)
         {

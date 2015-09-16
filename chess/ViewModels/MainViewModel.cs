@@ -8,22 +8,62 @@ using UIFoundation;
 
 namespace chess.ViewModels
 {
-    public class MainViewModel : BaseViewModel
+    public enum States
+    { 
+        State1,
+        State2
+    }
+
+    public class ChessPiece : BindableBase
     {
-        public IEnumerable<Tuple<int, int>> items;
-        public IEnumerable<Tuple<int, int>> Items
+        public ChessPiece(int x, int y)
         {
-            get { return this.items; }
-            private set { this.SetProperty(ref this.items, value); }
+            this.x = x;
+            this.y = y;
         }
 
+        private int x;
 
-        public ICommand Command { get; private set; }
-        private Random r = new Random();
+        public int X
+        {
+            get { return x; }
+            set { this.SetProperty(ref this.x, value); }
+        }
 
-        private string state;
+        private int y;
 
-        public string State
+        public int Y
+        {
+            get { return y; }
+            set { this.SetProperty(ref this.y, value); }
+        }
+
+        public string PiesType { get; set; }
+        
+    }
+
+    public class MainViewModel : BindableBase
+    {
+        public IEnumerable<ChessPiece> chessPieces;
+        public IEnumerable<ChessPiece> ChessPieces
+        {
+            get { return this.chessPieces; }
+            set { this.SetProperty(ref this.chessPieces, value); }
+        }
+
+        public IEnumerable<Tuple<int,int>> possibleMoves;
+        public IEnumerable<Tuple<int, int>> PossibleMoves
+        {
+            get { return this.possibleMoves; }
+            set { this.SetProperty(ref this.possibleMoves, value); }
+        }
+
+        public ICommand MoveStep1Command { get; private set; }
+        public ICommand MoveStep2Command { get; private set; }
+
+        private States state = States.State1;
+
+        public States State
         {
             get { return state; }
             set { this.SetProperty(ref this.state, value); }
@@ -32,9 +72,24 @@ namespace chess.ViewModels
 
         public MainViewModel()
         {
-            this.State = "State1";
-            this.Command = new Command((o) => this.State = this.State == "State1" ? "State2" : "State1");
-            this.Items = new List<Tuple<int, int>>() { new Tuple<int, int>(1, 1), new Tuple<int, int>(2, 2), new Tuple<int, int>(3, 3) };
+            this.State = States.State1;
+            this.MoveStep1Command = new Command(MoveStep1);
+            this.MoveStep2Command = new Command(MoveStep2);
+            this.ChessPieces = new List<ChessPiece>() { new ChessPiece(2, 2), new ChessPiece(2, 2), new ChessPiece(3, 3) };
+        }
+
+        private void MoveStep1(object p)
+        {
+            var val = p as ChessPiece;
+            if (val != null)
+            { 
+                //possibleMoves = new []{-1,1}.GroupBy((i)=>i).Select()
+            }
+        }
+
+        private void MoveStep2(object p)
+        {
+
         }
     }
 }
