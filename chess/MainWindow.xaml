@@ -14,8 +14,52 @@
                 <RowDefinition Height="auto"/>
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
-            <Button Command="{Binding Command}">asd</Button>
-            <ListBox x:Name="board" Grid.Row="1" ItemsSource="{Binding Items}">
+            <Button>asd</Button>
+            <ListBox x:Name="_chessPieces" Grid.Row="1" ItemsSource="{Binding ChessPieces}" VerticalContentAlignment="Stretch" HorizontalContentAlignment="Stretch">
+                <ListBox.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition/>
+                                <RowDefinition/>
+                                <RowDefinition/>
+                                <RowDefinition/>
+                                <RowDefinition/>
+                                <RowDefinition/>
+                                <RowDefinition/>
+                                <RowDefinition/>
+                            </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition/>
+                                <ColumnDefinition/>
+                                <ColumnDefinition/>
+                                <ColumnDefinition/>
+                                <ColumnDefinition/>
+                                <ColumnDefinition/>
+                                <ColumnDefinition/>
+                                <ColumnDefinition/>
+                            </Grid.ColumnDefinitions>
+                        </Grid>
+                    </ItemsPanelTemplate>
+                </ListBox.ItemsPanel>
+                <ListBox.ItemContainerStyle>
+                    <Style TargetType="ListBoxItem">
+                        <Setter Property="Grid.Column" Value="{Binding X}"/>
+                        <Setter Property="Grid.Row" Value="{Binding Y}"/>
+                    </Style>
+                </ListBox.ItemContainerStyle>
+                <ListBox.ItemTemplate>
+                    <DataTemplate>
+                        <Button Command="{Binding DataContext.MoveStep1Command, RelativeSource={RelativeSource AncestorType=ListBox}}" CommandParameter="{Binding}">
+                            <StackPanel>
+                                <TextBlock Text="{Binding X}"/>
+                                <TextBlock Text="{Binding Y}"/>
+                            </StackPanel>
+                        </Button>
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+            </ListBox>
+            <ListBox x:Name="_possibleMoves" Grid.Row="1" ItemsSource="{Binding PossibleMoves}" VerticalContentAlignment="Stretch" HorizontalContentAlignment="Stretch">
                 <ListBox.ItemsPanel>
                     <ItemsPanelTemplate>
                         <Grid>
@@ -50,27 +94,41 @@
                 </ListBox.ItemContainerStyle>
                 <ListBox.ItemTemplate>
                     <DataTemplate>
-                        <StackPanel>
-                            <TextBlock Text="{Binding Item1}"/>
-                            <TextBlock Text="{Binding Item2}"/>
-                        </StackPanel>
+                        <Button Command="{Binding DataContext.MoveStep2Command, RelativeSource={RelativeSource AncestorType=ListBox}}" CommandParameter="{Binding}">
+                            <StackPanel>
+                                <TextBlock Text="{Binding Item1}"/>
+                                <TextBlock Text="{Binding Item2}"/>
+                            </StackPanel>
+                        </Button>
                     </DataTemplate>
                 </ListBox.ItemTemplate>
             </ListBox>
         </Grid>
-
     </Grid>
     <VisualStateManager.VisualStateGroups>
         <VisualStateGroup x:Name="Common">
             <VisualState x:Name="State1">
                 <Storyboard>
-                    <DoubleAnimation To="1" Duration="0:00:01" Storyboard.TargetName="board" Storyboard.TargetProperty="Opacity" />
+                    <!--<DoubleAnimation To="1" Duration="0:00:01" Storyboard.TargetName="_chessPieces" Storyboard.TargetProperty="Opacity" />-->
+                    <!--<ObjectAnimationUsingKeyFrames Storyboard.TargetName="_chessPieces" Storyboard.TargetProperty="Visibility">
+                        <DiscreteObjectKeyFrame KeyTime="0:00:00" Value="{x:Static Visibility.Visible}"/>
+                    </ObjectAnimationUsingKeyFrames>-->
+                    <DoubleAnimation To="0" Duration="0:00:01" Storyboard.TargetName="_possibleMoves" Storyboard.TargetProperty="Opacity" />
+                    <ObjectAnimationUsingKeyFrames Storyboard.TargetName="_possibleMoves" Storyboard.TargetProperty="Visibility">
+                        <DiscreteObjectKeyFrame KeyTime="0:00:01" Value="{x:Static Visibility.Collapsed}"/>
+                    </ObjectAnimationUsingKeyFrames>
                 </Storyboard>
             </VisualState>
             <VisualState x:Name="State2">
                 <Storyboard>
-                    <DoubleAnimation To="0" Duration="0:00:01" Storyboard.TargetName="board" Storyboard.TargetProperty="Opacity" />
-                    <!--<DoubleAnimation To="1" Duration="0:00:00.4" Storyboard.TargetName="State2Panel" Storyboard.TargetProperty="(UIElement.Opacity)" />-->
+                    <!--<DoubleAnimation To="0" Duration="0:00:01" Storyboard.TargetName="_chessPieces" Storyboard.TargetProperty="Opacity" />-->
+                    <!--<ObjectAnimationUsingKeyFrames Storyboard.TargetName="_chessPieces" Storyboard.TargetProperty="Visibility">
+                        <DiscreteObjectKeyFrame KeyTime="0:00:01" Value="{x:Static Visibility.Collapsed}"/>
+                    </ObjectAnimationUsingKeyFrames>-->
+                    <DoubleAnimation To="0.5" Duration="0:00:01" Storyboard.TargetName="_possibleMoves" Storyboard.TargetProperty="Opacity" />
+                    <ObjectAnimationUsingKeyFrames Storyboard.TargetName="_possibleMoves" Storyboard.TargetProperty="Visibility">
+                        <DiscreteObjectKeyFrame KeyTime="0:00:00" Value="{x:Static Visibility.Visible}"/>
+                    </ObjectAnimationUsingKeyFrames>
                 </Storyboard>
             </VisualState>
         </VisualStateGroup>
