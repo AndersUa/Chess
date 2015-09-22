@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using System.Windows.Input;
 using UIFoundation;
 
-namespace chess.ViewModels
+namespace Chess.App.ViewModels
 {
     public enum States
     {
