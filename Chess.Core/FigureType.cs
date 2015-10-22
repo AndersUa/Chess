@@ -6,7 +6,13 @@ using System.Threading.Tasks;
 
 namespace Chess.Core
 {
-    public class Class1
+    public enum FigureType
     {
+        King,
+        Queen,
+        Rook,
+        Knight,
+        Bishop,
+        Pawn
     }
 }
