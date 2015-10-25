@@ -13,11 +13,12 @@ namespace UIFoundation
         protected void SetProperty<T>(ref T container, T value, [CallerMemberName]string memberName = null)
         {
             container = value;
-            var ev = this.PropertyChanged;
-            if (ev != null)
-            {
-                ev(this, new PropertyChangedEventArgs(memberName));
-            }
+            this.PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(memberName));
+        }
+
+        protected void OnPropertyChanged(string name)
+        {
+            this.PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
         }
 
         public event PropertyChangedEventHandler PropertyChanged;

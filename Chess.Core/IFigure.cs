@@ -13,5 +13,6 @@ namespace Chess.Core
         Point[] GetPossibleMoves();
         FigureType Type { get; }
         FigureColor Color { get; }
+        Point Point { get; }
     }
 }

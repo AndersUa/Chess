@@ -10,9 +10,11 @@ namespace Chess.Core
     {
         IFigure[] GetFigures();
         Move[] GetMoves();
-
         bool Load(string file);
+        void Start();
+
+
+        event Action<IFigure, Move> Move;
         event Action<FigureColor> Turn;
-        event Action<IFigure, FigureColor, Move> Move;
     }
 }

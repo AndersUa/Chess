@@ -18,7 +18,7 @@
             <ListBox x:Name="_chessPieces" Grid.Row="1" ItemsSource="{Binding ChessPieces}" VerticalContentAlignment="Stretch" HorizontalContentAlignment="Stretch">
                 <ListBox.ItemsPanel>
                     <ItemsPanelTemplate>
-                        <Grid>
+                        <Grid ShowGridLines="True">
                             <Grid.RowDefinitions>
                                 <RowDefinition/>
                                 <RowDefinition/>
@@ -46,14 +46,15 @@
                     <Style TargetType="ListBoxItem">
                         <Setter Property="Grid.Column" Value="{Binding X}"/>
                         <Setter Property="Grid.Row" Value="{Binding Y}"/>
+                        <Setter Property="IsEnabled" Value="{Binding IsActive}"/>
                     </Style>
                 </ListBox.ItemContainerStyle>
                 <ListBox.ItemTemplate>
                     <DataTemplate>
                         <Button Command="{Binding DataContext.MoveStep1Command, RelativeSource={RelativeSource AncestorType=ListBox}}" CommandParameter="{Binding}">
                             <StackPanel>
-                                <TextBlock Text="{Binding X}"/>
-                                <TextBlock Text="{Binding Y}"/>
+                                <TextBlock Text="{Binding Type}"/>
+                                <TextBlock Text="{Binding Color}"/>
                             </StackPanel>
                         </Button>
                     </DataTemplate>

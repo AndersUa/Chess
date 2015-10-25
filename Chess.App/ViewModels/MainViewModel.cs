@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Chess.App.Models;
+using Chess.Core;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -44,8 +46,8 @@ namespace Chess.App.ViewModels
 
     public class MainViewModel : BindableBase
     {
-        public IEnumerable<ChessPiece> chessPieces;
-        public IEnumerable<ChessPiece> ChessPieces
+        public IEnumerable<FigureModel> chessPieces;
+        public IEnumerable<FigureModel> ChessPieces
         {
             get { return this.chessPieces; }
             set { this.SetProperty(ref this.chessPieces, value); }
@@ -58,12 +60,13 @@ namespace Chess.App.ViewModels
             set { this.SetProperty(ref this.possibleMoves, value); }
         }
 
-        private ChessPiece activePiece = null;
+        private FigureModel activePiece = null;
 
         public ICommand MoveStep1Command { get; private set; }
         public ICommand MoveStep2Command { get; private set; }
 
         private States state = States.State1;
+        private IGame game;
 
         public States State
         {
@@ -77,19 +80,41 @@ namespace Chess.App.ViewModels
             this.State = States.State1;
             this.MoveStep1Command = new Command(MoveStep1);
             this.MoveStep2Command = new Command(MoveStep2);
-            this.ChessPieces = new List<ChessPiece>() { new ChessPiece(1, 1), new ChessPiece(2, 2), new ChessPiece(3, 3) };
+
+            this.game = new GameFactory().CreateGame();
+            this.game.Turn += Game_Turn;
+            this.game.Move += Game_Move;
+
+            this.ChessPieces = game.GetFigures().Select(f => new FigureModel(f)).ToArray();
+            
+            this.game.Start();
+        }
+
+        private void Game_Move(IFigure arg1, Move arg2)
+        {
+            this.ChessPieces.Where(f => f.Origin.Point == arg1.Point).FirstOrDefault().Update();
+        }
+
+        private void Game_Turn(FigureColor color)
+        {
+            foreach (var figure in chessPieces)
+            {
+                figure.IsActive = figure.Color == color;
+            }
         }
 
         private void MoveStep1(object p)
         {
-            var val = p as ChessPiece;
+            var val = p as FigureModel;
             if (val != null)
             {
-                this.PossibleMoves = new[] { -1, 1 }.AllCombinations()
-                    .Select(t => Tuple.Create(val.X - t.Item1, val.Y - t.Item2))
-                    .Where(ft => ft.Item1 >= 0 && ft.Item1 < Constants.BoardSize && ft.Item2 >= 0 && ft.Item2 < Constants.BoardSize).ToArray();
-                this.activePiece = val;
-                this.State = States.State2;
+                var moves = val.Origin.GetPossibleMoves().Select(t => Tuple.Create(t.X, t.Y));
+                if (moves.Count() > 0)
+                {
+                    this.PossibleMoves = moves;
+                    this.activePiece = val;
+                    this.State = States.State2;
+                }
             }
             
         }
@@ -99,8 +124,7 @@ namespace Chess.App.ViewModels
             var val = p as Tuple<int, int>;
             if (val != null && this.activePiece != null)
             {
-                this.activePiece.X = val.Item1;
-                this.activePiece.Y = val.Item2;
+                this.activePiece.Origin.Move(new Point(val.Item1, val.Item2));
                 this.State = States.State1;
             }
         }
