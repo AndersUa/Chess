@@ -14,7 +14,7 @@ namespace Chess.Core
         void Start();
 
 
-        event Action<IFigure, Move> Move;
+        event Action<IFigure, IFigure, Move> Move;
         event Action<FigureColor> Turn;
     }
 }

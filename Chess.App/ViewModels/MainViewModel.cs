@@ -2,6 +2,7 @@
 using Chess.Core;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -46,8 +47,8 @@ namespace Chess.App.ViewModels
 
     public class MainViewModel : BindableBase
     {
-        public IEnumerable<FigureModel> chessPieces;
-        public IEnumerable<FigureModel> ChessPieces
+        public ICollection<FigureModel> chessPieces;
+        public ICollection<FigureModel> ChessPieces
         {
             get { return this.chessPieces; }
             set { this.SetProperty(ref this.chessPieces, value); }
@@ -85,14 +86,18 @@ namespace Chess.App.ViewModels
             this.game.Turn += Game_Turn;
             this.game.Move += Game_Move;
 
-            this.ChessPieces = game.GetFigures().Select(f => new FigureModel(f)).ToArray();
+            this.ChessPieces = new ObservableCollection<FigureModel>(game.GetFigures().Select(f => new FigureModel(f)).ToArray());
             
             this.game.Start();
         }
 
-        private void Game_Move(IFigure arg1, Move arg2)
+        private void Game_Move(IFigure arg1, IFigure arg2, Move arg3)
         {
-            this.ChessPieces.Where(f => f.Origin.Point == arg1.Point).FirstOrDefault().Update();
+            if (arg2 != null)
+            {
+                this.ChessPieces.Remove(this.ChessPieces.First(p=>p.Origin == arg2));
+            }
+            this.ChessPieces.First(p => p.Origin == arg1).Update();
         }
 
         private void Game_Turn(FigureColor color)

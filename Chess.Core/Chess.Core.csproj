@@ -42,7 +42,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="FigureColor.cs" />
+    <Compile Include="Figures\BaseFigure.cs" />
+    <Compile Include="Figures\Bishop.cs" />
     <Compile Include="Figures\Pawn.cs" />
+    <Compile Include="Figures\Rook.cs" />
     <Compile Include="FigureType.cs" />
     <Compile Include="Game.cs" />
     <Compile Include="GameFactory.cs" />
