@@ -55,6 +55,7 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Constants.cs" />
+    <Compile Include="Converters\ChessPieceToSymbolConverter.cs" />
     <Compile Include="Extensions.cs" />
     <Compile Include="Models\FigureModel.cs" />
     <Compile Include="ViewModels\MainViewModel.cs" />

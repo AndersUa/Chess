@@ -2,7 +2,7 @@
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:local="clr-namespace:Chess.App.ViewModels"
-        Title="MainWindow" Height="350" Width="525"
+        Title="MainWindow" Height="500" Width="500" MinHeight="500" MinWidth="500"
         StateManager.VisualStateProperty="{Binding State}"
         >
     <Window.DataContext>
@@ -14,53 +14,8 @@
                 <RowDefinition Height="auto"/>
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
-            <Button>asd</Button>
+            <!--<Button>asd</Button>-->
             <ListBox x:Name="_chessPieces" Grid.Row="1" ItemsSource="{Binding ChessPieces}" VerticalContentAlignment="Stretch" HorizontalContentAlignment="Stretch">
-                <ListBox.ItemsPanel>
-                    <ItemsPanelTemplate>
-                        <Grid ShowGridLines="True">
-                            <Grid.RowDefinitions>
-                                <RowDefinition/>
-                                <RowDefinition/>
-                                <RowDefinition/>
-                                <RowDefinition/>
-                                <RowDefinition/>
-                                <RowDefinition/>
-                                <RowDefinition/>
-                                <RowDefinition/>
-                            </Grid.RowDefinitions>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition/>
-                                <ColumnDefinition/>
-                                <ColumnDefinition/>
-                                <ColumnDefinition/>
-                                <ColumnDefinition/>
-                                <ColumnDefinition/>
-                                <ColumnDefinition/>
-                                <ColumnDefinition/>
-                            </Grid.ColumnDefinitions>
-                        </Grid>
-                    </ItemsPanelTemplate>
-                </ListBox.ItemsPanel>
-                <ListBox.ItemContainerStyle>
-                    <Style TargetType="ListBoxItem">
-                        <Setter Property="Grid.Column" Value="{Binding X}"/>
-                        <Setter Property="Grid.Row" Value="{Binding Y}"/>
-                        <Setter Property="IsEnabled" Value="{Binding IsActive}"/>
-                    </Style>
-                </ListBox.ItemContainerStyle>
-                <ListBox.ItemTemplate>
-                    <DataTemplate>
-                        <Button Command="{Binding DataContext.MoveStep1Command, RelativeSource={RelativeSource AncestorType=ListBox}}" CommandParameter="{Binding}">
-                            <StackPanel>
-                                <TextBlock Text="{Binding Type}"/>
-                                <TextBlock Text="{Binding Color}"/>
-                            </StackPanel>
-                        </Button>
-                    </DataTemplate>
-                </ListBox.ItemTemplate>
-            </ListBox>
-            <ListBox x:Name="_possibleMoves" Grid.Row="1" ItemsSource="{Binding PossibleMoves}" VerticalContentAlignment="Stretch" HorizontalContentAlignment="Stretch">
                 <ListBox.ItemsPanel>
                     <ItemsPanelTemplate>
                         <Grid>
@@ -84,26 +39,110 @@
                                 <ColumnDefinition/>
                                 <ColumnDefinition/>
                             </Grid.ColumnDefinitions>
+                            <Grid.Background>
+                                <DrawingBrush Viewport="0,0,0.25,0.25" TileMode="Tile">
+                                    <DrawingBrush.Drawing>
+                                        <DrawingGroup>
+                                            <GeometryDrawing Brush="#d18b47">
+                                                <GeometryDrawing.Geometry>
+                                                    <RectangleGeometry Rect="0,0,100,100" />
+                                                </GeometryDrawing.Geometry>
+                                            </GeometryDrawing>
+
+                                            <GeometryDrawing Brush="#ffce9e">
+                                                <GeometryDrawing.Geometry>
+                                                    <GeometryGroup>
+                                                        <RectangleGeometry Rect="0,0,50,50" />
+                                                        <RectangleGeometry Rect="50,50,50,50" />
+                                                    </GeometryGroup>
+                                                </GeometryDrawing.Geometry>
+                                            </GeometryDrawing>
+                                        </DrawingGroup>
+                                    </DrawingBrush.Drawing>
+                                </DrawingBrush>
+                            </Grid.Background>
                         </Grid>
                     </ItemsPanelTemplate>
                 </ListBox.ItemsPanel>
                 <ListBox.ItemContainerStyle>
                     <Style TargetType="ListBoxItem">
-                        <Setter Property="Grid.Column" Value="{Binding Item1}"/>
-                        <Setter Property="Grid.Row" Value="{Binding Item2}"/>
+                        <Setter Property="Grid.Column" Value="{Binding X}"/>
+                        <Setter Property="Grid.Row" Value="{Binding Y}"/>
+                        <Setter Property="IsEnabled" Value="{Binding IsActive}"/>
                     </Style>
                 </ListBox.ItemContainerStyle>
                 <ListBox.ItemTemplate>
                     <DataTemplate>
-                        <Button Command="{Binding DataContext.MoveStep2Command, RelativeSource={RelativeSource AncestorType=ListBox}}" CommandParameter="{Binding}">
-                            <StackPanel>
-                                <TextBlock Text="{Binding Item1}"/>
-                                <TextBlock Text="{Binding Item2}"/>
-                            </StackPanel>
+                        <Button Command="{Binding DataContext.MoveStep1Command, RelativeSource={RelativeSource AncestorType=ListBox}}" CommandParameter="{Binding}" VerticalContentAlignment="Stretch" HorizontalContentAlignment="Stretch">
+                            <Button.Template>
+                                <ControlTemplate TargetType="Button">
+                                    <Grid Background="Transparent">
+                                        <ContentPresenter/>
+                                    </Grid>
+                                </ControlTemplate>
+                            </Button.Template>
+                            <Viewbox>
+                                <TextBlock Text="{Binding Converter={StaticResource symbolConverter}}" FontSize="25"/>
+                            </Viewbox>
                         </Button>
                     </DataTemplate>
                 </ListBox.ItemTemplate>
             </ListBox>
+            <Button Grid.Row="1" x:Name="_possibleMoves" VerticalContentAlignment="Stretch" HorizontalContentAlignment="Stretch" Command="{Binding DisableStep2Command}">
+                <Button.Template>
+                    <ControlTemplate TargetType="Button">
+                        <ContentPresenter/>
+                    </ControlTemplate>
+                </Button.Template>
+                <ListBox   ItemsSource="{Binding PossibleMoves}" VerticalContentAlignment="Stretch" HorizontalContentAlignment="Stretch" Background="{x:Null}">
+                    <ListBox.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition/>
+                                    <RowDefinition/>
+                                    <RowDefinition/>
+                                    <RowDefinition/>
+                                    <RowDefinition/>
+                                    <RowDefinition/>
+                                    <RowDefinition/>
+                                    <RowDefinition/>
+                                </Grid.RowDefinitions>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition/>
+                                    <ColumnDefinition/>
+                                    <ColumnDefinition/>
+                                    <ColumnDefinition/>
+                                    <ColumnDefinition/>
+                                    <ColumnDefinition/>
+                                    <ColumnDefinition/>
+                                    <ColumnDefinition/>
+                                </Grid.ColumnDefinitions>
+                            </Grid>
+                        </ItemsPanelTemplate>
+                    </ListBox.ItemsPanel>
+                    <ListBox.ItemContainerStyle>
+                        <Style TargetType="ListBoxItem">
+                            <Setter Property="Grid.Column" Value="{Binding Item1}"/>
+                            <Setter Property="Grid.Row" Value="{Binding Item2}"/>
+                        </Style>
+                    </ListBox.ItemContainerStyle>
+                    <ListBox.ItemTemplate>
+                        <DataTemplate>
+                            <Button Command="{Binding DataContext.MoveStep2Command, RelativeSource={RelativeSource AncestorType=ListBox}}" CommandParameter="{Binding}">
+                                <Button.Template>
+                                    <ControlTemplate TargetType="Button">
+                                        <ContentPresenter/>
+                                    </ControlTemplate>
+                                </Button.Template>
+                                <Grid Background="Transparent">
+                                    <Ellipse Fill="Black" Width="15" Height="15" Stroke="White" StrokeThickness="1"/>
+                                </Grid>
+                            </Button>
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                </ListBox>
+            </Button>
         </Grid>
     </Grid>
     <VisualStateManager.VisualStateGroups>
@@ -114,9 +153,9 @@
                     <!--<ObjectAnimationUsingKeyFrames Storyboard.TargetName="_chessPieces" Storyboard.TargetProperty="Visibility">
                         <DiscreteObjectKeyFrame KeyTime="0:00:00" Value="{x:Static Visibility.Visible}"/>
                     </ObjectAnimationUsingKeyFrames>-->
-                    <DoubleAnimation To="0" Duration="0:00:01" Storyboard.TargetName="_possibleMoves" Storyboard.TargetProperty="Opacity" />
+                    <!--<DoubleAnimation To="0" Duration="0:00:00" Storyboard.TargetName="_possibleMoves" Storyboard.TargetProperty="Opacity" />-->
                     <ObjectAnimationUsingKeyFrames Storyboard.TargetName="_possibleMoves" Storyboard.TargetProperty="Visibility">
-                        <DiscreteObjectKeyFrame KeyTime="0:00:01" Value="{x:Static Visibility.Collapsed}"/>
+                        <DiscreteObjectKeyFrame KeyTime="0:00:00" Value="{x:Static Visibility.Collapsed}"/>
                     </ObjectAnimationUsingKeyFrames>
                 </Storyboard>
             </VisualState>
@@ -126,7 +165,7 @@
                     <!--<ObjectAnimationUsingKeyFrames Storyboard.TargetName="_chessPieces" Storyboard.TargetProperty="Visibility">
                         <DiscreteObjectKeyFrame KeyTime="0:00:01" Value="{x:Static Visibility.Collapsed}"/>
                     </ObjectAnimationUsingKeyFrames>-->
-                    <DoubleAnimation To="0.5" Duration="0:00:01" Storyboard.TargetName="_possibleMoves" Storyboard.TargetProperty="Opacity" />
+                    <!--<DoubleAnimation To="0.5" Duration="0:00:00" Storyboard.TargetName="_possibleMoves" Storyboard.TargetProperty="Opacity" />-->
                     <ObjectAnimationUsingKeyFrames Storyboard.TargetName="_possibleMoves" Storyboard.TargetProperty="Visibility">
                         <DiscreteObjectKeyFrame KeyTime="0:00:00" Value="{x:Static Visibility.Visible}"/>
                     </ObjectAnimationUsingKeyFrames>

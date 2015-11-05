@@ -44,7 +44,10 @@
     <Compile Include="FigureColor.cs" />
     <Compile Include="Figures\BaseFigure.cs" />
     <Compile Include="Figures\Bishop.cs" />
+    <Compile Include="Figures\King.cs" />
+    <Compile Include="Figures\Knight.cs" />
     <Compile Include="Figures\Pawn.cs" />
+    <Compile Include="Figures\Queen.cs" />
     <Compile Include="Figures\Rook.cs" />
     <Compile Include="FigureType.cs" />
     <Compile Include="Game.cs" />

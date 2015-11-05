@@ -1,8 +1,9 @@
 ﻿<Application x:Class="Chess.App.App"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:converters ="clr-namespace:Chess.App.Converters"
              StartupUri="MainWindow.xaml">
     <Application.Resources>
-         
+         <converters:ChessPieceToSymbolConverter x:Key="symbolConverter"/>
     </Application.Resources>
 </Application>

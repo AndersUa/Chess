@@ -12,19 +12,43 @@ namespace Chess.Core.Figures
 
         public Point Point { get; internal set; }
 
-        protected void Init(Point point, FigureColor color)
+        internal IGameInternal Game { get; private set; }
+
+        protected IFigure[,] Board => this.Game.Board;
+
+        internal void Init(Point point, FigureColor color, IGameInternal game)
         {
             this.Point = point;
             this.Color = color;
+            this.Game = game;
         }
 
         public abstract FigureType Type { get; }
+        
 
-        public abstract bool CanMove(Point p);
+        public virtual bool CanMove(Point p)
+        {
+            return this.GetPossibleMoves().Any(m => m == p);
+        }
 
-        public abstract Point[] GetPossibleMoves();
+        public abstract Point[] OnGetPossibleMoves();
 
-        public abstract void Move(Point p);
+        public Point[] GetPossibleMoves(bool checkForCheck = true)
+        {
+            if (checkForCheck)
+                return this.Game.FilterPossibleMoveForCheck(this.OnGetPossibleMoves(), this).ToArray();
+            else
+                return this.OnGetPossibleMoves();
+        }
+
+        public virtual void Move(Point p)
+        {
+            if (!this.CanMove(p))
+                throw new InvalidOperationException("wrong move");
+            var tmp = this.Point;
+            this.Point = p;
+            this.Game.MakeStep(this, tmp, p);
+        }
 
         protected IEnumerable<Point> CreatePath(Point start, Func<Point, Point> nextStepFunc, IFigure[,] board)
         {

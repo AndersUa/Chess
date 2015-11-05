@@ -10,7 +10,7 @@ namespace Chess.Core
     {
         bool CanMove(Point p);
         void Move(Point p);
-        Point[] GetPossibleMoves();
+        Point[] GetPossibleMoves(bool checkForCheck = true);
         FigureType Type { get; }
         FigureColor Color { get; }
         Point Point { get; }

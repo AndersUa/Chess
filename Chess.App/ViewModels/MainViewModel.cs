@@ -65,6 +65,7 @@ namespace Chess.App.ViewModels
 
         public ICommand MoveStep1Command { get; private set; }
         public ICommand MoveStep2Command { get; private set; }
+        public ICommand DisableStep2Command { get; private set; }
 
         private States state = States.State1;
         private IGame game;
@@ -81,17 +82,24 @@ namespace Chess.App.ViewModels
             this.State = States.State1;
             this.MoveStep1Command = new Command(MoveStep1);
             this.MoveStep2Command = new Command(MoveStep2);
+            this.DisableStep2Command = new Command((o)=>this.State = States.State1);
 
             this.game = new GameFactory().CreateGame();
             this.game.Turn += Game_Turn;
             this.game.Move += Game_Move;
+            this.game.Chackmate += Game_Chackmate;
 
             this.ChessPieces = new ObservableCollection<FigureModel>(game.GetFigures().Select(f => new FigureModel(f)).ToArray());
             
             this.game.Start();
         }
 
-        private void Game_Move(IFigure arg1, IFigure arg2, Move arg3)
+        private void Game_Chackmate(FigureColor obj)
+        {
+            System.Windows.MessageBox.Show($"{obj.ToString()} is win!");
+        }
+
+        private void Game_Move(IFigure arg1, IFigure arg2, Move arg3, bool arg4)
         {
             if (arg2 != null)
             {
@@ -100,7 +108,7 @@ namespace Chess.App.ViewModels
             this.ChessPieces.First(p => p.Origin == arg1).Update();
         }
 
-        private void Game_Turn(FigureColor color)
+        private void Game_Turn(FigureColor color, bool isChack)
         {
             foreach (var figure in chessPieces)
             {

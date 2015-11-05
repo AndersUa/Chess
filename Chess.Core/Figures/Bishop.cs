@@ -8,38 +8,21 @@ namespace Chess.Core.Figures
 {
     public class Bishop : BaseFigure
     {
-        private IGameInternal g;
-
         internal Bishop(IGameInternal game, Point point, FigureColor color)
         {
-            this.g = game;
-            base.Init(point, color);
+            base.Init(point, color, game);
         }
 
         public override FigureType Type => FigureType.Bishop;
 
-        public override bool CanMove(Point p)
-        {
-            return this.GetPossibleMoves().Any(m => m == p);
-        }
-
-        public override Point[] GetPossibleMoves()
+        public override Point[] OnGetPossibleMoves()
         {
             var res = Enumerable.Empty<Point>();
-            res = res.Concat(base.CreatePath(base.Point, (p) => Point.Create(p.X + 1, p.Y + 1), this.g.Board));
-            res = res.Concat(base.CreatePath(base.Point, (p) => Point.Create(p.X + 1, p.Y - 1), this.g.Board));
-            res = res.Concat(base.CreatePath(base.Point, (p) => Point.Create(p.X - 1, p.Y + 1), this.g.Board));
-            res = res.Concat(base.CreatePath(base.Point, (p) => Point.Create(p.X - 1, p.Y - 1), this.g.Board));
+            res = res.Concat(base.CreatePath(base.Point, (p) => Point.Create(p.X + 1, p.Y + 1), base.Board));
+            res = res.Concat(base.CreatePath(base.Point, (p) => Point.Create(p.X + 1, p.Y - 1), base.Board));
+            res = res.Concat(base.CreatePath(base.Point, (p) => Point.Create(p.X - 1, p.Y + 1), base.Board));
+            res = res.Concat(base.CreatePath(base.Point, (p) => Point.Create(p.X - 1, p.Y - 1), base.Board));
             return res.ToArray();
-        }
-
-        public override void Move(Point p)
-        {
-            if (!this.CanMove(p))
-                throw new InvalidOperationException("wrong move");
-            var tmp = base.Point;
-            base.Point = p;
-            this.g.MakeStep(this, tmp, p);
         }
     }
 }

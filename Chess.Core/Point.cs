@@ -37,6 +37,21 @@ namespace Chess.Core
         {
             return !p1.Equals(p2);
         }
+
+        public static Point operator +(Point p1, Point p2)
+        {
+            return Point.Create(p1.X + p2.X, p1.Y + p2.Y);
+        }
+
+        public static Point operator -(Point p1, Point p2)
+        {
+            return Point.Create(p1.X - p2.X, p1.Y - p2.Y);
+        }
+
+        public override string ToString()
+        {
+            return $"({this.X}, {this.Y})";
+        }
     }
 
     public static class PointExt
@@ -53,7 +68,7 @@ namespace Chess.Core
 
         public static bool IsInRange(this Point p, int maxBoundary)
         {
-            return p.X >= 0 && p.Y > 0 && p.X < maxBoundary && p.Y < maxBoundary;
+            return p.X >= 0 && p.Y >= 0 && p.X < maxBoundary && p.Y < maxBoundary;
         }
     }
 
