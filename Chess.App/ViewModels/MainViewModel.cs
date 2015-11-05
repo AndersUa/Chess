@@ -97,6 +97,17 @@ namespace Chess.App.ViewModels
         private void Game_Chackmate(FigureColor obj)
         {
             System.Windows.MessageBox.Show($"{obj.ToString()} is win!");
+            this.game.Turn -= Game_Turn;
+            this.game.Move -= Game_Move;
+            this.game.Chackmate -= Game_Chackmate;
+            this.game = new GameFactory().CreateGame();
+            this.game.Turn += Game_Turn;
+            this.game.Move += Game_Move;
+            this.game.Chackmate += Game_Chackmate;
+
+            this.ChessPieces = new ObservableCollection<FigureModel>(game.GetFigures().Select(f => new FigureModel(f)).ToArray());
+
+            this.game.Start();
         }
 
         private void Game_Move(IFigure arg1, IFigure arg2, Move arg3, bool arg4)
