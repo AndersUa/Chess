@@ -28,6 +28,14 @@ namespace Chess.Core
             return p.HasValue ? this.X == p.Value.X && this.Y == p.Value.Y : false;
         }
 
+        public override int GetHashCode()
+        {
+            unchecked
+            {
+                return (this.X * 397) ^ this.Y;
+            }
+        }
+
         public static bool operator ==(Point p1, Point p2)
         {
             return p1.Equals(p2);

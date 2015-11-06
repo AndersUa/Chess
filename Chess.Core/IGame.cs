@@ -10,7 +10,6 @@ namespace Chess.Core
     {
         IFigure[] GetFigures();
         Move[] GetMoves();
-        bool Load(string file);
         void Start();
 
 

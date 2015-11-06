@@ -8,93 +8,39 @@
     <Window.DataContext>
         <local:MainViewModel/>
     </Window.DataContext>
+    <Window.Resources>
+        <ItemsPanelTemplate x:Key="legendHorizontalPanelTemplate">
+            <UniformGrid Rows="1" Columns="8"/>
+        </ItemsPanelTemplate>
+        <ItemsPanelTemplate x:Key="legendVerticalPanelTemplate">
+            <UniformGrid Rows="8" Columns="1"/>
+        </ItemsPanelTemplate>
+        <DataTemplate x:Key="legendItemTemplate">
+            <TextBlock Text="{Binding Content, RelativeSource={RelativeSource TemplatedParent}}" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+        </DataTemplate>
+    </Window.Resources>
     <Grid>
-        <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="0"/>
+        </Grid.ColumnDefinitions>
+        <Grid  Height="{Binding RelativeSource={RelativeSource Self}, Path=ActualWidth}" MaxHeight="{Binding RelativeSource={RelativeSource AncestorType=Grid}, Path=ActualHeight}" MaxWidth="{Binding RelativeSource={RelativeSource AncestorType=Grid}, Path=ActualHeight}">
             <Grid.RowDefinitions>
-                <RowDefinition Height="auto"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="25*"/>
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
-            <!--<Button>asd</Button>-->
-            <ListBox x:Name="_chessPieces" Grid.Row="1" ItemsSource="{Binding ChessPieces}" VerticalContentAlignment="Stretch" HorizontalContentAlignment="Stretch">
-                <ListBox.ItemsPanel>
-                    <ItemsPanelTemplate>
-                        <Grid>
-                            <Grid.RowDefinitions>
-                                <RowDefinition/>
-                                <RowDefinition/>
-                                <RowDefinition/>
-                                <RowDefinition/>
-                                <RowDefinition/>
-                                <RowDefinition/>
-                                <RowDefinition/>
-                                <RowDefinition/>
-                            </Grid.RowDefinitions>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition/>
-                                <ColumnDefinition/>
-                                <ColumnDefinition/>
-                                <ColumnDefinition/>
-                                <ColumnDefinition/>
-                                <ColumnDefinition/>
-                                <ColumnDefinition/>
-                                <ColumnDefinition/>
-                            </Grid.ColumnDefinitions>
-                            <Grid.Background>
-                                <DrawingBrush Viewport="0,0,0.25,0.25" TileMode="Tile">
-                                    <DrawingBrush.Drawing>
-                                        <DrawingGroup>
-                                            <GeometryDrawing Brush="#d18b47">
-                                                <GeometryDrawing.Geometry>
-                                                    <RectangleGeometry Rect="0,0,100,100" />
-                                                </GeometryDrawing.Geometry>
-                                            </GeometryDrawing>
-
-                                            <GeometryDrawing Brush="#ffce9e">
-                                                <GeometryDrawing.Geometry>
-                                                    <GeometryGroup>
-                                                        <RectangleGeometry Rect="0,0,50,50" />
-                                                        <RectangleGeometry Rect="50,50,50,50" />
-                                                    </GeometryGroup>
-                                                </GeometryDrawing.Geometry>
-                                            </GeometryDrawing>
-                                        </DrawingGroup>
-                                    </DrawingBrush.Drawing>
-                                </DrawingBrush>
-                            </Grid.Background>
-                        </Grid>
-                    </ItemsPanelTemplate>
-                </ListBox.ItemsPanel>
-                <ListBox.ItemContainerStyle>
-                    <Style TargetType="ListBoxItem">
-                        <Setter Property="Grid.Column" Value="{Binding X}"/>
-                        <Setter Property="Grid.Row" Value="{Binding Y}"/>
-                        <Setter Property="IsEnabled" Value="{Binding IsActive}"/>
-                    </Style>
-                </ListBox.ItemContainerStyle>
-                <ListBox.ItemTemplate>
-                    <DataTemplate>
-                        <Button Command="{Binding DataContext.MoveStep1Command, RelativeSource={RelativeSource AncestorType=ListBox}}" CommandParameter="{Binding}" VerticalContentAlignment="Stretch" HorizontalContentAlignment="Stretch">
-                            <Button.Template>
-                                <ControlTemplate TargetType="Button">
-                                    <Grid Background="Transparent">
-                                        <ContentPresenter/>
-                                    </Grid>
-                                </ControlTemplate>
-                            </Button.Template>
-                            <Viewbox>
-                                <TextBlock Text="{Binding Converter={StaticResource symbolConverter}}" FontSize="25"/>
-                            </Viewbox>
-                        </Button>
-                    </DataTemplate>
-                </ListBox.ItemTemplate>
-            </ListBox>
-            <Button Grid.Row="1" x:Name="_possibleMoves" VerticalContentAlignment="Stretch" HorizontalContentAlignment="Stretch" Command="{Binding DisableStep2Command}">
-                <Button.Template>
-                    <ControlTemplate TargetType="Button">
-                        <ContentPresenter/>
-                    </ControlTemplate>
-                </Button.Template>
-                <ListBox   ItemsSource="{Binding PossibleMoves}" VerticalContentAlignment="Stretch" HorizontalContentAlignment="Stretch" Background="{x:Null}">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="25*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <ItemsControl ItemsSource="{Binding Source=abcdefgh}" Grid.Row="0" Grid.Column="1" ItemsPanel="{StaticResource legendHorizontalPanelTemplate}" ItemTemplate="{StaticResource legendItemTemplate}"/>
+            <ItemsControl ItemsSource="{Binding Source=87654321}" Grid.Row="1" Grid.Column="0" ItemsPanel="{StaticResource legendVerticalPanelTemplate}" ItemTemplate="{StaticResource legendItemTemplate}"/>
+            <ItemsControl ItemsSource="{Binding Source=abcdefgh}" Grid.Row="2" Grid.Column="1" ItemsPanel="{StaticResource legendHorizontalPanelTemplate}" ItemTemplate="{StaticResource legendItemTemplate}"/>
+            <ItemsControl ItemsSource="{Binding Source=87654321}" Grid.Row="1" Grid.Column="2" ItemsPanel="{StaticResource legendVerticalPanelTemplate}" ItemTemplate="{StaticResource legendItemTemplate}"/>
+            <Grid Grid.Column="1" Grid.Row="1">
+                <ListBox x:Name="_chessPieces" Grid.Row="1" ItemsSource="{Binding ChessPieces}" VerticalContentAlignment="Stretch" HorizontalContentAlignment="Stretch">
                     <ListBox.ItemsPanel>
                         <ItemsPanelTemplate>
                             <Grid>
@@ -118,31 +64,111 @@
                                     <ColumnDefinition/>
                                     <ColumnDefinition/>
                                 </Grid.ColumnDefinitions>
+                                <Grid.Background>
+                                    <DrawingBrush Viewport="0,0,0.25,0.25" TileMode="Tile">
+                                        <DrawingBrush.Drawing>
+                                            <DrawingGroup>
+                                                <GeometryDrawing Brush="#d18b47">
+                                                    <GeometryDrawing.Geometry>
+                                                        <RectangleGeometry Rect="0,0,100,100" />
+                                                    </GeometryDrawing.Geometry>
+                                                </GeometryDrawing>
+
+                                                <GeometryDrawing Brush="#ffce9e">
+                                                    <GeometryDrawing.Geometry>
+                                                        <GeometryGroup>
+                                                            <RectangleGeometry Rect="0,0,50,50" />
+                                                            <RectangleGeometry Rect="50,50,50,50" />
+                                                        </GeometryGroup>
+                                                    </GeometryDrawing.Geometry>
+                                                </GeometryDrawing>
+                                            </DrawingGroup>
+                                        </DrawingBrush.Drawing>
+                                    </DrawingBrush>
+                                </Grid.Background>
                             </Grid>
                         </ItemsPanelTemplate>
                     </ListBox.ItemsPanel>
                     <ListBox.ItemContainerStyle>
                         <Style TargetType="ListBoxItem">
-                            <Setter Property="Grid.Column" Value="{Binding Item1}"/>
-                            <Setter Property="Grid.Row" Value="{Binding Item2}"/>
+                            <Setter Property="Grid.Column" Value="{Binding X}"/>
+                            <Setter Property="Grid.Row" Value="{Binding Y}"/>
+                            <Setter Property="IsEnabled" Value="{Binding IsActive}"/>
                         </Style>
                     </ListBox.ItemContainerStyle>
                     <ListBox.ItemTemplate>
                         <DataTemplate>
-                            <Button Command="{Binding DataContext.MoveStep2Command, RelativeSource={RelativeSource AncestorType=ListBox}}" CommandParameter="{Binding}">
+                            <Button Command="{Binding DataContext.MoveStep1Command, RelativeSource={RelativeSource AncestorType=ListBox}}" CommandParameter="{Binding}" VerticalContentAlignment="Stretch" HorizontalContentAlignment="Stretch">
                                 <Button.Template>
                                     <ControlTemplate TargetType="Button">
-                                        <ContentPresenter/>
+                                        <Grid Background="Transparent">
+                                            <ContentPresenter/>
+                                        </Grid>
                                     </ControlTemplate>
                                 </Button.Template>
-                                <Grid Background="Transparent">
-                                    <Ellipse Fill="Black" Width="15" Height="15" Stroke="White" StrokeThickness="1"/>
-                                </Grid>
+                                <Viewbox>
+                                    <TextBlock Text="{Binding Converter={StaticResource symbolConverter}}" FontSize="25"/>
+                                </Viewbox>
                             </Button>
                         </DataTemplate>
                     </ListBox.ItemTemplate>
                 </ListBox>
-            </Button>
+                <Button Grid.Row="1" x:Name="_possibleMoves" VerticalContentAlignment="Stretch" HorizontalContentAlignment="Stretch" Command="{Binding DisableStep2Command}">
+                    <Button.Template>
+                        <ControlTemplate TargetType="Button">
+                            <ContentPresenter/>
+                        </ControlTemplate>
+                    </Button.Template>
+                    <ListBox   ItemsSource="{Binding PossibleMoves}" VerticalContentAlignment="Stretch" HorizontalContentAlignment="Stretch" Background="{x:Null}">
+                        <ListBox.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <Grid>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition/>
+                                        <RowDefinition/>
+                                        <RowDefinition/>
+                                        <RowDefinition/>
+                                        <RowDefinition/>
+                                        <RowDefinition/>
+                                        <RowDefinition/>
+                                        <RowDefinition/>
+                                    </Grid.RowDefinitions>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition/>
+                                        <ColumnDefinition/>
+                                        <ColumnDefinition/>
+                                        <ColumnDefinition/>
+                                        <ColumnDefinition/>
+                                        <ColumnDefinition/>
+                                        <ColumnDefinition/>
+                                        <ColumnDefinition/>
+                                    </Grid.ColumnDefinitions>
+                                </Grid>
+                            </ItemsPanelTemplate>
+                        </ListBox.ItemsPanel>
+                        <ListBox.ItemContainerStyle>
+                            <Style TargetType="ListBoxItem">
+                                <Setter Property="Grid.Column" Value="{Binding Item1}"/>
+                                <Setter Property="Grid.Row" Value="{Binding Item2}"/>
+                            </Style>
+                        </ListBox.ItemContainerStyle>
+                        <ListBox.ItemTemplate>
+                            <DataTemplate>
+                                <Button Command="{Binding DataContext.MoveStep2Command, RelativeSource={RelativeSource AncestorType=ListBox}}" CommandParameter="{Binding}">
+                                    <Button.Template>
+                                        <ControlTemplate TargetType="Button">
+                                            <ContentPresenter/>
+                                        </ControlTemplate>
+                                    </Button.Template>
+                                    <Grid Background="Transparent">
+                                        <Ellipse Fill="Black" Width="15" Height="15" Stroke="White" StrokeThickness="1"/>
+                                    </Grid>
+                                </Button>
+                            </DataTemplate>
+                        </ListBox.ItemTemplate>
+                    </ListBox>
+                </Button>
+            </Grid>
         </Grid>
     </Grid>
     <VisualStateManager.VisualStateGroups>
