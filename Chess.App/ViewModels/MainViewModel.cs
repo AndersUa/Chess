@@ -70,13 +70,6 @@ namespace Chess.App.ViewModels
         private States state = States.State1;
         private IGame game;
 
-        private ICollection<FigureModel> fallenFigures = new ObservableCollection<FigureModel>();
-
-        public ICollection<FigureModel> FallenFigures => this.fallenFigures;
-
-        public IEnumerable<FigureModel> BlackFallenFigures => this.fallenFigures.ObservableWhere(f => f.Color == FigureColor.Black);
-        public IEnumerable<FigureModel> WhiteFallenFigures => this.fallenFigures.ObservableWhere(f => f.Color == FigureColor.White);
-
         public States State
         {
             get { return state; }
@@ -89,7 +82,7 @@ namespace Chess.App.ViewModels
             this.State = States.State1;
             this.MoveStep1Command = new Command(MoveStep1);
             this.MoveStep2Command = new Command(MoveStep2);
-            this.DisableStep2Command = new Command((o) => this.State = States.State1);
+            this.DisableStep2Command = new Command((o)=>this.State = States.State1);
 
             this.game = new GameFactory().CreateGame();
             this.game.Turn += Game_Turn;
@@ -97,7 +90,7 @@ namespace Chess.App.ViewModels
             this.game.Chackmate += Game_Chackmate;
 
             this.ChessPieces = new ObservableCollection<FigureModel>(game.GetFigures().Select(f => new FigureModel(f)).ToArray());
-
+            
             this.game.Start();
         }
 
@@ -121,8 +114,7 @@ namespace Chess.App.ViewModels
         {
             if (arg2 != null)
             {
-                this.ChessPieces.Remove(this.ChessPieces.First(p => p.Origin == arg2));
-                this.fallenFigures.Add(new FigureModel(arg2));
+                this.ChessPieces.Remove(this.ChessPieces.First(p=>p.Origin == arg2));
             }
             this.ChessPieces.First(p => p.Origin == arg1).Update();
         }
@@ -148,7 +140,7 @@ namespace Chess.App.ViewModels
                     this.State = States.State2;
                 }
             }
-
+            
         }
 
         private void MoveStep2(object p)
