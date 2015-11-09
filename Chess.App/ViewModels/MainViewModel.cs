@@ -1,10 +1,8 @@
 ﻿using Chess.App.Models;
 using Chess.Core;
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -76,8 +74,8 @@ namespace Chess.App.ViewModels
 
         public ICollection<FigureModel> FallenFigures => this.fallenFigures;
 
-        public IEnumerable BlackFallenFigures => this.fallenFigures.ObservableWhere(f => f.Color == FigureColor.Black);
-        public IEnumerable WhiteFallenFigures => this.fallenFigures.ObservableWhere(f => f.Color == FigureColor.White);
+        public IEnumerable<FigureModel> BlackFallenFigures => this.fallenFigures.ObservableWhere(f => f.Color == FigureColor.Black);
+        public IEnumerable<FigureModel> WhiteFallenFigures => this.fallenFigures.ObservableWhere(f => f.Color == FigureColor.White);
 
         public States State
         {

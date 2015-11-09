@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
@@ -17,7 +16,7 @@ namespace UIFoundationTest
 
         public ICommand Command => new Command(OnCommand);
 
-        public IEnumerable FilteredCollection => Collection.ObservableWhere(p => p % 2 == 0);
+        public IEnumerable<int> FilteredCollection => Collection.ObservableWhere(p => p % 2 == 0);
 
         private void OnCommand(object obj)
         {
