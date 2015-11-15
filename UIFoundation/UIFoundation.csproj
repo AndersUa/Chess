@@ -50,6 +50,7 @@
   <ItemGroup>
     <Compile Include="BindableBase.cs" />
     <Compile Include="Command.cs" />
+    <Compile Include="DataTemplateCollection.cs" />
     <Compile Include="ObservableCollectionExt.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>

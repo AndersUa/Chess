@@ -56,5 +56,5 @@ using System.Windows.Markup;
 [assembly: AssemblyFileVersion("1.0.0.0")]
 
 //http://schemas.microsoft.com/winfx/2006/xaml/presentation
-[assembly: XmlnsPrefix("http://schemas.microsoft.com/winfx/2006/xaml/presentation", "t")]
+[assembly: XmlnsPrefix("http://schemas.microsoft.com/winfx/2006/xaml/presentation", "UIFoundation")]
 [assembly: XmlnsDefinition("http://schemas.microsoft.com/winfx/2006/xaml/presentation", "UIFoundation")]
