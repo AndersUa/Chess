@@ -1,4 +1,5 @@
-﻿using Chess.Core.Figures;
+﻿using Chess.Core.EventArgs;
+using Chess.Core.Figures;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,9 +14,9 @@ namespace Chess.Core
 
         public IFigure[,] Board => this.board;
 
-        public event Action<IFigure, IFigure, Move, bool> Move;
-        public event Action<FigureColor, bool> Turn;
-        public event Action<FigureColor> Chackmate;
+        public event EventHandler<MoveEventArgs> Move;
+        public event EventHandler<TurnEventArgs> Turn;
+        public event EventHandler<ChackmateEventArgs> Chackmate;
 
         public IFigure[] GetFigures()
         {
@@ -44,16 +45,16 @@ namespace Chess.Core
             }
             this.Board[to.X, to.Y] = figure;
             var isCheck = this.IsCheck(figure.Color == FigureColor.Black ? FigureColor.White : FigureColor.Black);
-            this.Move?.Invoke(figure, fallen, new Move(from, to), isCheck);
+            this.Move?.Invoke(this, new MoveEventArgs() { AffectedFigures = new[] { figure }, FallenFigure = fallen, Move = new Move(from, to), IsChack = isCheck });
             if (isCheck && this.IsMate(figure.Color == FigureColor.Black ? FigureColor.White : FigureColor.Black))
-                this.Chackmate?.Invoke(figure.Color);
+                this.Chackmate?.Invoke(this, new ChackmateEventArgs() { WinnerColor = figure.Color });
             else
-                this.Turn?.Invoke(figure.Color == FigureColor.Black ? FigureColor.White : FigureColor.Black, isCheck);
+                this.Turn?.Invoke(this, new TurnEventArgs() { Color = figure.Color == FigureColor.Black ? FigureColor.White : FigureColor.Black, IsCheck = isCheck });
         }
 
         public void Start()
         {
-            this.Turn?.Invoke(FigureColor.White, false);
+            this.Turn?.Invoke(this, new TurnEventArgs() { Color = FigureColor.White, IsCheck = false });
         }
 
         public IEnumerable<Point> FilterPossibleMoveForCheck(IEnumerable<Point> points, BaseFigure piece)

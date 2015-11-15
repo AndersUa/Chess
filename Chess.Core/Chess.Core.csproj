@@ -41,6 +41,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="EventArgs\ChackmateEventArgs.cs" />
+    <Compile Include="EventArgs\MoveEventArgs.cs" />
+    <Compile Include="EventArgs\TurnEventArgs.cs" />
     <Compile Include="FigureColor.cs" />
     <Compile Include="Figures\BaseFigure.cs" />
     <Compile Include="Figures\Bishop.cs" />

@@ -1,5 +1,6 @@
 ﻿using Chess.App.Models;
 using Chess.Core;
+using Chess.Core.EventArgs;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -110,9 +111,9 @@ namespace Chess.App.ViewModels
             this.game.Start();
         }
 
-        private void Game_Chackmate(FigureColor obj)
+        private void Game_Chackmate(object sender, ChackmateEventArgs args)
         {
-            System.Windows.MessageBox.Show($"{obj.ToString()} is win!");
+            System.Windows.MessageBox.Show($"{args.WinnerColor.ToString()} is win!");
             this.game.Turn -= Game_Turn;
             this.game.Move -= Game_Move;
             this.game.Chackmate -= Game_Chackmate;
@@ -126,21 +127,24 @@ namespace Chess.App.ViewModels
             this.game.Start();
         }
 
-        private void Game_Move(IFigure arg1, IFigure arg2, Move arg3, bool arg4)
+        private void Game_Move(object sender, MoveEventArgs args)
         {
-            if (arg2 != null)
+            if (args.FallenFigure != null)
             {
-                this.ChessPieces.Remove(this.ChessPieces.First(p => p.Origin == arg2));
-                this.fallenFigures.Add(new FigureModel(arg2));
+                this.ChessPieces.Remove(this.ChessPieces.First(p => p.Origin == args.FallenFigure));
+                this.fallenFigures.Add(new FigureModel(args.FallenFigure));
             }
-            this.ChessPieces.First(p => p.Origin == arg1).Update();
+            foreach (var figure in args.AffectedFigures)
+            {
+                this.ChessPieces.First(p => p.Origin == figure).Update();
+            }
         }
 
-        private void Game_Turn(FigureColor color, bool isChack)
+        private void Game_Turn(object sender, TurnEventArgs args)
         {
             foreach (var figure in chessPieces)
             {
-                figure.IsActive = figure.Color == color;
+                figure.IsActive = figure.Color == args.Color;
             }
         }
 

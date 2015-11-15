@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Chess.Core.EventArgs;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -12,9 +13,9 @@ namespace Chess.Core
         Move[] GetMoves();
         void Start();
 
-
-        event Action<IFigure, IFigure, Move, bool> Move;
-        event Action<FigureColor, bool> Turn;
-        event Action<FigureColor> Chackmate;
+        
+        event EventHandler<MoveEventArgs> Move;
+        event EventHandler<TurnEventArgs> Turn;
+        event EventHandler<ChackmateEventArgs> Chackmate;
     }
 }
